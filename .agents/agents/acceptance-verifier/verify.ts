@@ -93,8 +93,8 @@ function extractCriteria(specContent: string): Criterion[] {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
-    // Detectar inicio de la sección
-    if (/^##\s*criterios\s+de\s+aceptación/i.test(line)) {
+    // Detectar inicio de la sección (acepta opcionalmente número de sección, ej. "## 6. Criterios de aceptación")
+    if (/^##\s*\d*\.?\s*criterios\s+de\s+aceptación/i.test(line)) {
       inAcceptance = true;
       continue;
     }
