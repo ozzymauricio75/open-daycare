@@ -1,6 +1,6 @@
 # SPEC 01 — Home feed fiel al prototipo
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** Ninguna
 > **Fecha:** 2026-11-01
 > **Objetivo:** Replicar `references/pantallas/feed.dc.html` como home `/` con Tailwind v4, fuentes Fredoka/Nunito y datos mock tipados, sin autenticación ni base de datos.
@@ -107,18 +107,18 @@ Paleta a tokenizar (valores exactos, sin redondear):
 
 ## Criterios de aceptación
 
-- [ ] `/` muestra sidebar fija de 248px a la izquierda y contenido a la derecha; el `body` no scrollea, solo el panel de contenido.
-- [ ] El fondo general es `#F6ECDF`, las superficies `#FFFDF9` y los bordes `#ECE0D0`, verificable en los estilos computados.
-- [ ] Marca, `h1` y nombres de autor usan Fredoka; el resto usa Nunito; Geist no aparece en ningún elemento.
-- [ ] Se ven las tres publicaciones con badge `LOGRO`, `ACTIVIDAD` y `ANUNCIO`, sus colores exactos y contadores `3/1`, `5/2`, `8/0`.
-- [ ] Ningún identificador de código (tipos, variables, funciones, componentes, archivos, `id`) está en español; todo el copy visible al usuario sí lo está.
-- [ ] La publicación de actividad muestra el recuadro punteado con "Foto · pintando con témperas".
-- [ ] Todos los enlaces del prototipo existen con `href="#"` y no navegan ni producen 404.
-- [ ] A 924×540 el screenshot coincide visualmente con `references/screenshots/feed.png` en layout, tipografía, colores y espaciados.
-- [ ] Por debajo de 900px aparece scroll horizontal en vez de un layout colapsado.
-- [ ] `npm run lint`, `npx tsc --noEmit` y `npm run build` terminan sin errores nuevos.
-- [ ] La consola del navegador en `/` no muestra errores ni warnings.
-- [ ] No se agregó ninguna dependencia a `package.json`.
+- [x] `/` muestra sidebar fija de 248px a la izquierda y contenido a la derecha; el `body` no scrollea, solo el panel de contenido.
+- [x] El fondo general es `#F6ECDF`, las superficies `#FFFDF9` y los bordes `#ECE0D0`, verificable en los estilos computados.
+- [x] Marca, `h1` y nombres de autor usan Fredoka; el resto usa Nunito; Geist no aparece en ningún elemento.
+- [x] Se ven las tres publicaciones con badge `LOGRO`, `ACTIVIDAD` y `ANUNCIO`, sus colores exactos y contadores `3/1`, `5/2`, `8/0`.
+- [x] Ningún identificador de código (tipos, variables, funciones, componentes, archivos, `id`) está en español; todo el copy visible al usuario sí lo está.
+- [x] La publicación de actividad muestra el recuadro punteado con "Foto · pintando con témperas".
+- [x] Todos los enlaces del prototipo existen con `href="#"` y no navegan ni producen 404.
+- [x] A 924×540 el screenshot coincide visualmente con `references/screenshots/feed.png` en layout, tipografía, colores y espaciados.
+- [x] Por debajo de 900px aparece scroll horizontal en vez de un layout colapsado.
+- [x] `npm run lint`, `npx tsc --noEmit` y `npm run build` terminan sin errores nuevos.
+- [x] La consola del navegador en `/` no muestra errores ni warnings.
+- [x] No se agregó ninguna dependencia a `package.json`.
 
 ## Decisiones tomadas y descartadas
 
