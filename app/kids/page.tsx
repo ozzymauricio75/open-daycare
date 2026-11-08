@@ -1,17 +1,31 @@
+"use client";
+
+import { useState } from "react";
 import { kids } from "@/app/_data/kids";
 import { Sidebar } from "@/app/_components/sidebar";
 import { KidsPageHeader } from "@/app/_components/kids-page-header";
+import { KidsAddModal } from "@/app/_components/kids-add-modal";
 import { KidsSearch } from "@/app/_components/kids-search";
 import { ChildCard } from "@/app/_components/child-card";
 
 export default function KidsPage() {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="flex min-h-screen min-w-[900px] bg-cream">
       <Sidebar />
 
       <main className="h-screen min-w-0 flex-1 overflow-y-auto">
         <div className="mx-auto w-full max-w-[880px] px-10 pt-[34px] pb-20">
-          <KidsPageHeader />
+          <KidsPageHeader onAdd={() => setOpen(true)} />
+          <KidsAddModal
+            open={open}
+            onClose={() => setOpen(false)}
+            onSave={() => {
+              // Mock puro: Guardar solo cierra el modal, no persiste nada.
+              setOpen(false);
+            }}
+          />
           <KidsSearch />
           <div className="mb-[14px] flex items-center gap-[12px]">
             <span className="text-[12.5px] font-extrabold tracking-[0.8px] text-muted">
