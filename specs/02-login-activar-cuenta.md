@@ -81,17 +81,17 @@ Convenciones:
 
 ## Criterios de aceptación
 
-- [ ] `/login` muestra "Iniciar sesión", campos EMAIL y CONTRASEÑA, "¿Olvidaste tu contraseña?", botón "Iniciar sesión" y enlace a "Activá tu cuenta"; **no** muestra el selector Personal/Familia.
-- [ ] `/activar-cuenta` muestra "Bienvenida a OpenDayCare", tarjeta "Mateo · Sala Soles", código `7K4P9`, email `lucia.fernandez@gmail.com`, consentimiento de fotos, botón "Activar mi cuenta" y enlace "Iniciar sesión".
-- [ ] El email por defecto del login es `lucia.fernandez@gmail.com`.
-- [ ] Ningún identificador de código está en español; todo el copy visible al usuario sí lo está.
-- [ ] Los enlaces entre pantallas funcionan; el destino del botón "Iniciar sesión" es `href="#"`.
-- [ ] `npm run lint` — sin errores nuevos, consola limpia.
-- [ ] `npx tsc --noEmit` — tipos limpios (regenerar `.next/types` con `npx next typegen` si es necesario).
-- [ ] `npm run build` — build de producción exitoso.
-- [ ] Visual: capturas de Playwright a 924×540 en `.playwright-mcp/` coinciden con los `.dc.html` (revisión manual, sin PNG de referencia).
-- [ ] No se agregó ninguna dependencia a `package.json`.
-- [ ] La consola del navegador en ambas rutas no muestra errores ni warnings.
+- [x] `/login` muestra "Iniciar sesión", campos EMAIL y CONTRASEÑA, "¿Olvidaste tu contraseña?", botón "Iniciar sesión" y enlace a "Activá tu cuenta"; **no** muestra el selector Personal/Familia.
+- [x] `/activar-cuenta` muestra "Bienvenida a OpenDayCare", tarjeta "Mateo · Sala Soles", código `7K4P9`, email `lucia.fernandez@gmail.com`, consentimiento de fotos, botón "Activar mi cuenta" y enlace "Iniciar sesión".
+- [x] El email por defecto del login es `lucia.fernandez@gmail.com`.
+- [x] Ningún identificador de código está en español; todo el copy visible al usuario sí lo está.
+- [x] Los enlaces entre pantallas funcionan; el destino del botón "Iniciar sesión" es `href="#"`.
+- [x] `npm run lint` — sin errores nuevos, consola limpia.
+- [x] `npx tsc --noEmit` — tipos limpios (regenerar `.next/types` con `npx next typegen` si es necesario).
+- [x] `npm run build` — build de producción exitoso.
+- [x] Visual: capturas de Playwright a 924×540 en `.playwright-mcp/` coinciden con los `.dc.html` (revisión manual, sin PNG de referencia).
+- [x] No se agregó ninguna dependencia a `package.json`.
+- [x] La consola del navegador en ambas rutas no muestra errores ni warnings.
 
 ## Decisiones tomadas y descartadas
 
