@@ -36,6 +36,30 @@ const postKindStyles: Record<PostKind, PostKindStyle> = {
     label: "text-announcement",
     avatar: "bg-[#CCD8F4] text-announcement",
   },
+  meal: {
+    badge: "bg-[#9A7B1E]",
+    dot: "bg-[#9A7B1E]",
+    label: "text-white",
+    avatar: "bg-[#9A7B1E] text-white font-display text-[17px] font-semibold",
+  },
+  nap: {
+    badge: "bg-[#E7DCF6]",
+    dot: "bg-[#7B5FC0]",
+    label: "text-[#7B5FC0]",
+    avatar: "bg-[#E7DCF6] text-[#7B5FC0] font-display text-[17px] font-semibold",
+  },
+  mood: {
+    badge: "bg-[#F9D2DE]",
+    dot: "bg-[#C56486]",
+    label: "text-[#C56486]",
+    avatar: "bg-[#F9D2DE] text-[#C56486] font-display text-[17px] font-semibold",
+  },
+  photo: {
+    badge: "bg-[#FBD8CC]",
+    dot: "bg-[#D9684A]",
+    label: "text-[#D9684A]",
+    avatar: "bg-[#FBD8CC] text-[#D9684A] font-display text-[17px] font-semibold",
+  },
 };
 
 export function PostCard({ post }: { post: Post }) {

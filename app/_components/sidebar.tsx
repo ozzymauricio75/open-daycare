@@ -28,7 +28,11 @@ const navStateStyles = {
   inactive: "bg-transparent text-[#6e6359] font-semibold",
 };
 
-export function Sidebar() {
+export function Sidebar({
+  onNuevaPublicacion,
+}: {
+  onNuevaPublicacion?: () => void;
+}) {
   const pathname = usePathname();
   const isKids = pathname.startsWith("/kids");
 
@@ -48,13 +52,14 @@ export function Sidebar() {
         </span>
       </Link>
 
-      <Link
-        href="#"
-        className="mb-[18px] flex w-full items-center justify-center gap-2 rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] p-3 text-[14.5px] font-extrabold text-white shadow-[0_8px_18px_-8px_rgba(238,129,100,0.75)]"
+      <button
+        type="button"
+        onClick={onNuevaPublicacion}
+        className="mb-[18px] flex w-full items-center justify-center gap-2 rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] p-3 text-[14.5px] font-extrabold text-white shadow-[0_8px_18px_-8px_rgba(238,129,100,0.75)] disabled:opacity-60 disabled:pointer-events-none"
       >
         <PlusIcon />
         Nueva publicación
-      </Link>
+      </button>
 
       <nav className="flex flex-1 flex-col gap-1">
         {navItems.map(({ label, href, icon: Icon }) => {
