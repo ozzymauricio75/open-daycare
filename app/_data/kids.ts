@@ -251,3 +251,14 @@ export function padresSubtitle(padresVinculados: number): string {
     padresVinculados > 1 ? "es" : ""
   } vinculado${padresVinculados > 1 ? "s" : ""}`;
 }
+
+export type Room = {
+  key: string;   // "soles" | "luna" | "mar"
+  label: string; // "Soles" | "Luna" | "Mar" (texto visible en el select del modal)
+};
+
+export const ROOMS: Room[] = [
+  { key: "soles", label: "Soles" },
+  { key: "luna", label: "Luna" },
+  { key: "mar", label: "Mar" },
+];
