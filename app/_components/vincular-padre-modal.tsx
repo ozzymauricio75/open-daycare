@@ -4,6 +4,23 @@ import { useCallback, useEffect, useState } from "react";
 
 type Parentesco = "Mamá" | "Papá" | "Tutor/a";
 
+type FormData = {
+  nombre: string;
+  email: string;
+};
+
+type FieldError = {
+  nombre: boolean;
+  email: boolean;
+};
+
+const EMPTY_FORM: FormData = {
+  nombre: "",
+  email: "",
+};
+
+const EMPTY_ERRORS: FieldError = { nombre: false, email: false };
+
 export function VincularPadreModal({
   kidNombre,
   isOpen,
@@ -14,10 +31,9 @@ export function VincularPadreModal({
   onClose: () => void;
 }) {
   const [parentesco, setParentesco] = useState<Parentesco>("Mamá");
-  const [nombre, setNombre] = useState("");
-  const [email, setEmail] = useState("");
-  const [nombreError, setNombreError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
+  const [form, setForm] = useState<FormData>(EMPTY_FORM);
+  const [errors, setErrors] = useState<FieldError>(EMPTY_ERRORS);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleParentescoChange = useCallback(
     (next: Parentesco) => {
@@ -28,16 +44,16 @@ export function VincularPadreModal({
 
   const handleNombreChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setNombre(e.target.value);
-      setNombreError(false);
+      setForm((prev) => ({ ...prev, nombre: e.target.value }));
+      setErrors((prev) => ({ ...prev, nombre: false }));
     },
     []
   );
 
   const handleEmailChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setEmail(e.target.value);
-      setEmailError(false);
+      setForm((prev) => ({ ...prev, email: e.target.value }));
+      setErrors((prev) => ({ ...prev, email: false }));
     },
     []
   );
@@ -45,21 +61,28 @@ export function VincularPadreModal({
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+
+      const nextErrors: FieldError = { nombre: false, email: false };
       let hasError = false;
-      if (!nombre.trim()) {
-        setNombreError(true);
+
+      if (!form.nombre.trim()) {
+        nextErrors.nombre = true;
         hasError = true;
       }
-      if (!email.trim()) {
-        setEmailError(true);
+      if (!form.email.trim()) {
+        nextErrors.email = true;
         hasError = true;
       }
-      if (!hasError) {
-        // Sin acción real: placeholder para futura lógica de envío
-        console.log("Enviar invitación:", { nombre, email, parentesco });
-      }
+
+      setErrors(nextErrors);
+      if (hasError) return;
+
+      setSubmitting(true);
+      // Sin acción real: placeholder para futura lógica de envío
+      console.log("Enviar invitación:", { ...form, parentesco });
+      setSubmitting(false);
     },
-    [nombre, email, parentesco]
+    [form, parentesco]
   );
 
   // Cierre con la tecla Esc
@@ -156,12 +179,12 @@ export function VincularPadreModal({
               <input
                 type="text"
                 required
-                value={nombre}
+                value={form.nombre}
                 onChange={handleNombreChange}
                 placeholder="Ej. Diego Fernández"
-                className={`w-full px-[16px] py-[13px] rounded-[14px] border-[1.5px] ${nombreError ? "border-coral-deep" : "border-[#eadfd0]"} bg-white text-ink text-[15px] placeholder-[#b6a99b] focus:outline-none outline-none`}
+                className={`w-full px-[16px] py-[13px] rounded-[14px] border-[1.5px] ${errors.nombre ? "border-coral-deep" : "border-[#eadfd0]"} bg-white text-ink text-[15px] placeholder-[#b6a99b] focus:border-coral-deep focus:ring-0 outline-none`}
               />
-              {nombreError && (
+              {errors.nombre && (
                 <span className="text-[11px] text-coral-deep mt-[4px] block">
                   Este campo es obligatorio
                 </span>
@@ -169,7 +192,7 @@ export function VincularPadreModal({
             </div>
 
             {/* EMAIL */}
-            <div className="mb-[0]">
+            <div className="mb-[18px]">
               <label
                 className="text-[12px] font-extrabold tracking-[0.7px] text-muted-2 mb-[8px] block"
               >
@@ -178,12 +201,12 @@ export function VincularPadreModal({
               <input
                 type="email"
                 required
-                value={email}
+                value={form.email}
                 onChange={handleEmailChange}
                 placeholder="correo@ejemplo.com"
-                className={`w-full px-[16px] py-[13px] rounded-[14px] border-[1.5px] ${emailError ? "border-coral-deep" : "border-[#eadfd0]"} bg-white text-ink text-[15px] placeholder-[#b6a99b] focus:outline-none outline-none`}
+                className={`w-full px-[16px] py-[13px] rounded-[14px] border-[1.5px] ${errors.email ? "border-coral-deep" : "border-[#eadfd0]"} bg-white text-ink text-[15px] placeholder-[#b6a99b] focus:border-coral-deep focus:ring-0 outline-none`}
               />
-              {emailError && (
+              {errors.email && (
                 <span className="text-[11px] text-coral-deep mt-[4px] block">
                   Este campo es obligatorio
                 </span>
@@ -236,7 +259,8 @@ export function VincularPadreModal({
             {/* CTA Enviar invitación */}
             <button
               type="submit"
-              className="flex items-center justify-center gap-[9px] w-full px-0 py-[14px] rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] text-[#fff] font-extrabold text-[15.5px] shadow-[0_10px_22px_-8px_rgba(238,129,100,0.7)]"
+              disabled={submitting}
+              className={`flex items-center justify-center gap-[9px] w-full px-0 py-[14px] rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] text-[#fff] font-extrabold text-[15.5px] shadow-[0_10px_22px_-8px_rgba(238,129,100,0.7)] disabled:opacity-60 disabled:pointer-events-none`}
             >
               <svg
                 width="19"
