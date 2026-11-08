@@ -17,7 +17,7 @@ El perfil del niño ya tiene el botón "Vincular otro padre" con `href="#"` (SPE
 
 **In:**
 
-- Componente `vincular-padre-modal.tsx` en `app/_components/`: modal centrado con cabecera "Vincular padre" + "a <Nombre del niño>", aviso de correo con código, input "NOMBRE DEL PADRE/MADRE" (obligatorio) y input "EMAIL" (`type="email"`, placeholder `correo@ejemplo.com`, obligatorio) con estructura válida de correo a nivel de navegador, botones de parentesco Mamá/Papá/Tutor/a (Mamá seleccionado por defecto), caja "CÓDIGO DE INVITACIÓN" con código `7K4P9` y "Vence en 7 días", botón "Enviar invitación" (`href="#"`) y botón de cerrar (X). Los campos nombre y email son obligatorios: el botón de envío los valida y muestra error si están vacíos.
+- Componente `vincular-padre-modal.tsx` en `app/_components/`: modal centrado con cabecera "Vincular padre" + "a <Nombre del niño>", aviso de correo con código, input "NOMBRE DEL PADRE/MADRE" (obligatorio) y input "EMAIL" (`type="email"`, placeholder `correo@ejemplo.com`, obligatorio) con estructura válida de correo a nivel de navegador, botones de parentesco Mamá/Papá/Tutor/a (Mamá seleccionado por defecto), caja "CÓDIGO DE INVITACIÓN" con código `7K4P9` y "Vence en 7 días", botón "Enviar invitación" (button type="button") y botón de cerrar (X). Los campos nombre y email son obligatorios: el botón de envío los valida y muestra error si están vacíos, y no ejecuta acción real.
 - Modificar `app/kids/[slug]/page.tsx`: el enlace "Vincular otro padre" abre el modal en lugar de `href="#"` (se agrega estado de visibilidad del modal y se renderiza el componente dentro de la página).
 - Copy visible al usuario en español, literal del prototipo `.dc.html` (títulos, labels, placeholders, códigos, mensajes).
 - Identificadores de código (archivos, tipos, variables, clases) en inglés.
@@ -64,7 +64,7 @@ Esta spec no introduce nuevas estructuras de datos. Reusa lo existente:
 - [x] Los campos NOMBRE DEL PADRE/MADRE y EMAIL son obligatorios: si están vacíos al hacer clic en "Enviar invitación", se muestra error y no se navega.
 - [x] Botones de parentesco Mamá/Papá/Tutor/a; "Mamá" seleccionado por defecto (fondo #CCD8F4, texto #4E72C8).
 - [x] Caja CÓDIGO DE INVITACIÓN con código `7K4P9` y "Vence en 7 días".
-- [x] Botón "Enviar invitación" con `href="#"` (sin acción real).
+- [x] Botón "Enviar invitación" (sin acción real; valida campos obligatorios antes de permitir el envío).
 - [x] Identificadores en inglés; copy visible en español, literal del prototipo.
 - [x] `npm run lint` — sin errores nuevos, consola limpia.
 - [x] `npx tsc --noEmit` — tipos limpios, sin errores de `PageProps` (regenerar `.next/types` si es necesario).
@@ -77,7 +77,7 @@ Esta spec no introduce nuevas estructuras de datos. Reusa lo existente:
 ## 6. Decisiones tomadas y descartadas
 
 - **Sí:** modal como componente `vincular-padre-modal.tsx` en `app/_components/`, renderizado dentro de `app/kids/[slug]/page.tsx`. No hay nueva ruta de página; el modal se abre sobre el perfil del niño, manteniendo el diseño centrado del `.dc.html`.
-- **Sí:** `href="#"` en "Enviar invitación". No hay lógica de envío real; es una pantalla de presentación.
+- **Sí:** `button type="button"` en "Enviar invitación". No hay lógica de envío real; valida campos obligatorios y no ejecuta acción.
 - **Sí:** "Mamá" preseleccionado por defecto. Coincide con el prototipo, donde Mamá aparece activo (fondo azul).
 - **Sí:** nombre y email son campos obligatorios. El botón "Enviar invitación" los valida y muestra error si están vacíos; no hay envío real (href="#").
 - **Sí:** reusar datos existentes (`kids.ts` por `slug`, código `7K4P9`). No hay archivo de datos nuevo.

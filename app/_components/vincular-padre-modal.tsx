@@ -43,7 +43,7 @@ export function VincularPadreModal({
   );
 
   const handleEnviar = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>) => {
+    (e: React.MouseEvent<HTMLButtonElement>) => {
       let hasError = false;
       if (!nombre.trim()) {
         setNombreError(true);
@@ -231,8 +231,8 @@ export function VincularPadreModal({
           </div>
 
           {/* CTA Enviar invitación */}
-          <a
-            href="#"
+          <button
+            type="button"
             onClick={handleEnviar}
             className="flex items-center justify-center gap-[9px] w-full px-0 py-[14px] rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] text-[#fff] font-extrabold text-[15.5px] shadow-[0_10px_22px_-8px_rgba(238,129,100,0.7)]"
           >
@@ -251,7 +251,7 @@ export function VincularPadreModal({
               <path d="M22 2 11 13" />
             </svg>
             Enviar invitación
-          </a>
+          </button>
         </div>
       </div>
     </>
