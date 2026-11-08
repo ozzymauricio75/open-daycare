@@ -3,7 +3,7 @@
 > **Estado:** Aprobado
 > **Depende de:** SPEC 01 (Home feed), SPEC 03 (Modal: Agregar niño)
 > **Fecha:** 2026-11-08
-> **Objetivo:** Implementar el modal "Nueva publicación" fiel a `references/pantallas/crear-publicacion.dc.html`, que se abre al hacer clic en el botón "Nueva publicación" del sidebar del feed `/`, con audiencia PARA (Mateo, Sofía, Benjamín + Toda la sala), tipos TIPO (7), campo DESCRIPCIÓN obligatorio, fotos (botón Agregar inerte), validación al publicar siguiendo la convención de errores de Agregar niño, y cierre con Cancelar / fondo / Esc, sin persistencia ni navegación.
+> **Objetivo:** Implementar el modal "Nueva publicación" fiel a `references/pantallas/crear-publicacion.dc.html`, que se abre al hacer clic en el botón "Nueva publicación" del sidebar del feed `/`, con audiencia PARA (Mateo, Sofía, Benjamín + Toda la sala), tipos TIPO (7), campo DESCRIPCIÓN obligatorio, fotos con selección de archivo, vista previa y eliminación, validación al publicar siguiendo la convención de errores de Agregar niño, y cierre con Cancelar / fondo / Esc, sin persistencia ni navegación.
 
 ## Por qué existe esta spec
 
@@ -19,7 +19,7 @@ Es la quinta entrega visual del proyecto (tras home feed, niños/perfil, login/a
 - Audiencia PARA: botones de selección a partir de `kids` de `app/_data/kids.ts` (Mateo, Sofía, Benjamín con inicial y color de avatar del mock; además "Toda la sala").
 - Tipos TIPO: 7 botones del prototipo (Comida, Siesta, Actividad, Logro, Ánimo, Foto, Anuncio) con sus colores exactos; se extiende `PostKind`/`POST_KIND_LABELS` en `app/_data/feed.ts`.
 - DESCRIPCIÓN: textarea obligatorio con placeholder del prototipo ("Contá cómo le fue hoy…"); se valida al pulsar Publicar.
-- FOTOS: zona de foto vacía estática del prototipo + botón "Agregar" inerte (sin subida real de imágenes).
+- FOTOS: zona de foto vacía estática del prototipo + botón "Agregar" que abre un selector de archivos de imagen; las fotos seleccionadas se muestran como thumbnails con vista previa (Data URL) y botón para eliminar cada una; sin subida real al servidor.
 - Errores: al pulsar Publicar con DESCRIPCIÓN vacía → borde `coral-deep` en el textarea + mensaje "Este campo es obligatorio" debajo; el modal no se cierra hasta completar el campo.
 - Copy visible al usuario en español, literal del prototipo. Identificadores de código en inglés.
 - Tokens de `app/globals.css` y fuentes Fredoka/Nunito ya cargadas (sin modificaciones).
@@ -69,7 +69,8 @@ Estilos de cada tipo (fondo y color) se definen en un mapa con clases Tailwind l
 2. Crear `app/_components/crear-publicacion-modal.tsx` (secciones PARA/TIPO/DESCRIPCIÓN/FOTOS del prototipo, validación de descripción obligatoria al publicar, cierre Cancelar/fondo/Esc, animación CSS keyframes). Prueba: renderiza montado provisionalmente en `/` y `npx tsc --noEmit` limpio.
 3. En `app/page.tsx`: estado `open` del modal y render condicional de `CrearPublicacionModal`. Prueba: el feed sigue funcionando y el modal se declara en la página.
 4. En `app/_components/sidebar.tsx`: agregar prop `onNuevaPublicacion`; el botón "Nueva publicación" deja de ser `Link` inerte (`href="#"`) y llama al handler que abre el modal. Prueba: clic en "Nueva publicación" abre el modal sin navegar.
-5. Publicar con DESCRIPTION vacía: marca error (borde `coral-deep` + mensaje debajo) e impide cierre. Publicar completo: cierra el modal, no navega, no persiste. Prueba: `npm run dev`.
+5. Fotos: selector de archivo al pulsar "Agregar", vista previa de thumbnails con botón de eliminar, limpieza de URLs de objeto al desmontar. Prueba: se pueden seleccionar, ver y eliminar imágenes.
+6. Publicar con DESCRIPTION vacía: marca error (borde `coral-deep` + mensaje debajo) e impide cierre. Publicar completo: cierra el modal, no navega, no persiste. Prueba: `npm run dev`.
 6. Ajuste final: `npm run lint`, `npx tsc --noEmit`, `npm run build`.
 7. Verificación visual: con `npm run dev`, capturar con Playwright a 924×540 en `.playwright-mcp/` y comparar contra `references/pantallas/crear-publicacion.dc.html`.
 
@@ -77,6 +78,7 @@ Estilos de cada tipo (fondo y color) se definen en un mapa con clases Tailwind l
 
 - [ ] Clic en "Nueva publicación" del sidebar abre el modal (sin navegar).
 - [x] Modal fiel a `crear-publicacion.dc.html`: PARA (Mateo, Sofía, Benjamín, Toda la sala), TIPO (7 tipos con colores del prototipo), DESCRIPCIÓN, FOTOS.
+- [ ] FOTOS: al pulsar "Agregar" se abre el selector de archivo; las imágenes seleccionadas se muestran como thumbnails con vista previa y se pueden eliminar individualmente.
 - [ ] DESCRIPCIÓN obligatorio: publicar vacío marca error y impide el cierre.
 - [ ] Publicar completo: cierra el modal, no navega, no persiste.
 - [ ] Cierre con Cancelar, clic en fondo y Esc.
@@ -94,7 +96,7 @@ Estilos de cada tipo (fondo y color) se definen en un mapa con clases Tailwind l
 - **Sí:** Publicar = mock puro (cierra el modal, no persiste, no navega), igual que Agregar niño.
 - **Sí:** errores solo al pulsar Publicar, borde `coral-deep` + mensaje debajo (convención de `kids-add-modal.tsx`).
 - **Sí:** animación solo CSS; componente en `app/_components/` con estado en la página; botón deja de ser `Link` inerte.
-- **No:** validación interactiva campo por campo; subida de fotos real; persistencia o navegación tras publicar; responsive móvil; dark mode; dependencias nuevas; ruta independiente `/crear-publicacion`.
+- **No:** validación interactiva campo por campo; subida de fotos al servidor (las fotos se manejan en memoria como Data URL); persistencia o navegación tras publicar; responsive móvil; dark mode; dependencias nuevas; ruta independiente `/crear-publicacion`.
 
 ## Riesgos
 
@@ -107,7 +109,7 @@ Estilos de cada tipo (fondo y color) se definen en un mapa con clases Tailwind l
 ## Lo que **no** entra en esta spec
 
 - Persistencia, publicar realmente, navegación tras publicar, pantalla de éxito o detalle.
-- Subida de fotos real (el botón "Agregar" queda inerte).
+- Subida de fotos al servidor (las fotos se manejan en memoria como Data URL; no se envían a ningún backend).
 - Validación interactiva, responsive móvil, dark mode, tests automatizados.
 
 Cada uno de esos puntos, si llega, va en su propia spec.

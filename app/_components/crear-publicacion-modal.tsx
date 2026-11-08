@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ImageIcon } from "@/app/_components/icons";
 
 type AudienceMember = {
@@ -34,11 +34,18 @@ const POST_TYPES: PostType[] = [
   { key: "announcement", label: "Anuncio", bg: "#CCD8F4", color: "#4E72C8" },
 ];
 
+type Photo = {
+  id: string;
+  url: string;
+  name: string;
+};
+
 type FormState = {
   description: string;
   selectedKids: string[];
   selectedType: string;
   allRoom: boolean;
+  photos: Photo[];
 };
 
 type FieldError = {
@@ -50,6 +57,7 @@ const EMPTY_FORM: FormState = {
   selectedKids: [],
   selectedType: "",
   allRoom: false,
+  photos: [],
 };
 
 const EMPTY_ERRORS: FieldError = { description: false };
@@ -65,6 +73,7 @@ export function CrearPublicacionModal({
 }) {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [errors, setErrors] = useState<FieldError>(EMPTY_ERRORS);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const toggleKid = useCallback(
     (kidId: string) => {
@@ -95,6 +104,38 @@ export function CrearPublicacionModal({
     setForm((prev) => ({ ...prev, description: value }));
   }, []);
 
+  const openFilePicker = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
+
+  const handleFileSelect = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const files = Array.from(e.target.files || []);
+      const imageFiles = files.filter((f) => f.type.startsWith("image/"));
+      const newPhotos: Photo[] = imageFiles.map((file, index) => ({
+        id: `${Date.now()}-${index}`,
+        url: URL.createObjectURL(file),
+        name: file.name,
+      }));
+      setForm((prev) => ({ ...prev, photos: [...prev.photos, ...newPhotos] }));
+      e.target.value = "";
+    },
+    []
+  );
+
+  const removePhoto = useCallback(
+    (id: string) => {
+      setForm((prev) => {
+        const photoToRemove = prev.photos.find((p) => p.id === id);
+        if (photoToRemove) {
+          URL.revokeObjectURL(photoToRemove.url);
+        }
+        return { ...prev, photos: prev.photos.filter((p) => p.id !== id) };
+      });
+    },
+    []
+  );
+
   const handlePublish = useCallback(() => {
     const nextErrors: FieldError = { description: false };
     let hasError = false;
@@ -120,6 +161,13 @@ export function CrearPublicacionModal({
     return () => document.removeEventListener("keydown", handleKey);
   }, [open, onClose]);
 
+  // Revocar URLs de objeto al desmontar
+  useEffect(() => {
+    return () => {
+      form.photos.forEach((p) => URL.revokeObjectURL(p.url));
+    };
+  }, [form.photos]);
+
   if (!open) return null;
 
   const isKidSelected = (kidId: string) => form.selectedKids.includes(kidId);
@@ -137,6 +185,15 @@ export function CrearPublicacionModal({
 
   return (
     <>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        onChange={handleFileSelect}
+        className="hidden"
+      />
+
       {/* Backdrop: clic fuera cierra el modal */}
       <div
         className="fixed inset-0 z-[60] bg-black/30 backdrop-blur-sm animate-backdrop-in"
@@ -268,14 +325,36 @@ export function CrearPublicacionModal({
             <div className="text-[12px] font-extrabold tracking-[0.7px] text-[#94887B] mb-[10px] uppercase">
               FOTOS
             </div>
-            <div className="flex gap-[12px]">
-              <div
-                className="w-[96px] h-[96px] rounded-[14px] bg-[#f4ece1] border border-[#ece0d0] flex items-center justify-center"
-              >
-                <ImageIcon size={26} className="text-[#cbb89f]" />
-              </div>
+            <div className="flex flex-wrap gap-[12px]">
+              {form.photos.length > 0 ? (
+                form.photos.map((photo) => (
+                  <div
+                    key={photo.id}
+                    className="relative w-[96px] h-[96px] rounded-[14px] overflow-hidden border border-[#ece0d0] bg-[#f4ece1]"
+                    style={{ backgroundImage: `url(${photo.url})`, backgroundSize: "cover", backgroundPosition: "center" }}
+                  >
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removePhoto(photo.id);
+                      }}
+                      className="absolute top-[2px] right-[2px] w-6 h-6 rounded-full bg-[#3F362E] flex items-center justify-center text-[10px] text-white"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <div
+                  className="w-[96px] h-[96px] rounded-[14px] bg-[#f4ece1] border border-[#ece0d0] flex items-center justify-center"
+                >
+                  <ImageIcon size={26} className="text-[#cbb89f]" />
+                </div>
+              )}
               <button
                 type="button"
+                onClick={openFilePicker}
                 className="w-[96px] h-[96px] rounded-[14px] border-[1.5px] border-[#dbcbba] bg-[#f4ece1] flex flex-col items-center justify-center gap-[6px] cursor-pointer text-[#b0a290]"
               >
                 <svg
