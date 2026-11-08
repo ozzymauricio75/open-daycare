@@ -42,8 +42,9 @@ export function VincularPadreModal({
     []
   );
 
-  const handleEnviar = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
       let hasError = false;
       if (!nombre.trim()) {
         setNombreError(true);
@@ -53,11 +54,12 @@ export function VincularPadreModal({
         setEmailError(true);
         hasError = true;
       }
-      if (hasError) {
-        e.preventDefault();
+      if (!hasError) {
+        // Sin acción real: placeholder para futura lógica de envío
+        console.log("Enviar invitación:", { nombre, email, parentesco });
       }
     },
-    [nombre, email]
+    [nombre, email, parentesco]
   );
 
   // Cierre con la tecla Esc
@@ -143,115 +145,116 @@ export function VincularPadreModal({
             </span>
           </div>
 
-          {/* NOMBRE DEL PADRE/MADRE */}
-          <div className="mb-[8px]">
-            <label
-              className="text-[12px] font-extrabold tracking-[0.7px] text-muted-2 mb-[8px] block"
-            >
-              NOMBRE DEL PADRE/MADRE
-            </label>
-            <input
-              type="text"
-              required
-              value={nombre}
-              onChange={handleNombreChange}
-              placeholder="Ej. Diego Fernández"
-              className={`w-full px-[16px] py-[13px] rounded-[14px] border-[1.5px] ${nombreError ? "border-coral-deep" : "border-[#eadfd0]"} bg-white text-ink text-[15px] placeholder-[#b6a99b] focus:outline-none outline-none`}
-            />
-            {nombreError && (
-              <span className="text-[11px] text-coral-deep mt-[4px] block">
-                Este campo es obligatorio
-              </span>
-            )}
-          </div>
-
-          {/* EMAIL */}
-          <div className="mb-[18px]">
-            <label
-              className="text-[12px] font-extrabold tracking-[0.7px] text-muted-2 mb-[8px] block"
-            >
-              EMAIL
-            </label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={handleEmailChange}
-              placeholder="correo@ejemplo.com"
-              className={`w-full px-[16px] py-[13px] rounded-[14px] border-[1.5px] ${emailError ? "border-coral-deep" : "border-[#eadfd0]"} bg-white text-ink text-[15px] placeholder-[#b6a99b] focus:outline-none outline-none`}
-            />
-            {emailError && (
-              <span className="text-[11px] text-coral-deep mt-[4px] block">
-                Este campo es obligatorio
-              </span>
-            )}
-          </div>
-
-          {/* PARENTESCO */}
-          <div className="mb-[10px]">
-            <label
-              className="text-[12px] font-extrabold tracking-[0.7px] text-muted-2 mb-[8px] block"
-            >
-              PARENTESCO
-            </label>
-            <div className="flex gap-[9px]">
-              {[ "Mamá", "Papá", "Tutor/a" ].map((p) => {
-                const selected = isSelected(p as Parentesco);
-                return (
-                  <button
-                    key={p}
-                    type="button"
-                    onClick={() => handleParentescoChange(p as Parentesco)}
-                    className={`flex-1 px-0 py-[11px] rounded-[999px] font-extrabold text-[14px] cursor-pointer transition ${
-                      selected
-                        ? "border-[1.5px] border-[#9fb8ec] bg-[#ccd8f4] text-[#4e72c8]"
-                        : "border-[1.5px] border-[#ece0d0] bg-[#fffdf9] text-[#6e6359]"
-                    }`}
-                  >
-                    {p}
-                  </button>
-                );
-              })}
+          <form onSubmit={handleSubmit} className="space-y-[18px]">
+            {/* NOMBRE DEL PADRE/MADRE */}
+            <div className="mb-[8px]">
+              <label
+                className="text-[12px] font-extrabold tracking-[0.7px] text-muted-2 mb-[8px] block"
+              >
+                NOMBRE DEL PADRE/MADRE
+              </label>
+              <input
+                type="text"
+                required
+                value={nombre}
+                onChange={handleNombreChange}
+                placeholder="Ej. Diego Fernández"
+                className={`w-full px-[16px] py-[13px] rounded-[14px] border-[1.5px] ${nombreError ? "border-coral-deep" : "border-[#eadfd0]"} bg-white text-ink text-[15px] placeholder-[#b6a99b] focus:outline-none outline-none`}
+              />
+              {nombreError && (
+                <span className="text-[11px] text-coral-deep mt-[4px] block">
+                  Este campo es obligatorio
+                </span>
+              )}
             </div>
-          </div>
 
-          {/* Código de invitación */}
-          <div
-            className="bg-[#fbf1d6] border-[1.5px] border-[#e6d08a] border-dashed rounded-[16px] p-[18px] text-center mb-[20px]"
-          >
-            <div className="text-[12px] font-extrabold tracking-[0.7px] text-[#a88526] mb-[8px]">
-              CÓDIGO DE INVITACIÓN
+            {/* EMAIL */}
+            <div className="mb-[0]">
+              <label
+                className="text-[12px] font-extrabold tracking-[0.7px] text-muted-2 mb-[8px] block"
+              >
+                EMAIL
+              </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="correo@ejemplo.com"
+                className={`w-full px-[16px] py-[13px] rounded-[14px] border-[1.5px] ${emailError ? "border-coral-deep" : "border-[#eadfd0]"} bg-white text-ink text-[15px] placeholder-[#b6a99b] focus:outline-none outline-none`}
+              />
+              {emailError && (
+                <span className="text-[11px] text-coral-deep mt-[4px] block">
+                  Este campo es obligatorio
+                </span>
+              )}
             </div>
-            <div className="font-display font-semibold text-[34px] tracking-[7px] text-[#8a7234]">
-              7K4P9
-            </div>
-            <div className="mt-[6px] text-[13px] text-[#a88526]">
-              Vence en 7 días
-            </div>
-          </div>
 
-          {/* CTA Enviar invitación */}
-          <button
-            type="button"
-            onClick={handleEnviar}
-            className="flex items-center justify-center gap-[9px] w-full px-0 py-[14px] rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] text-[#fff] font-extrabold text-[15.5px] shadow-[0_10px_22px_-8px_rgba(238,129,100,0.7)]"
-          >
-            <svg
-              width="19"
-              height="19"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#fff"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
+            {/* PARENTESCO */}
+            <div className="mb-[10px]">
+              <label
+                className="text-[12px] font-extrabold tracking-[0.7px] text-muted-2 mb-[8px] block"
+              >
+                PARENTESCO
+              </label>
+              <div className="flex gap-[9px]">
+                {[ "Mamá", "Papá", "Tutor/a" ].map((p) => {
+                  const selected = isSelected(p as Parentesco);
+                  return (
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => handleParentescoChange(p as Parentesco)}
+                      className={`flex-1 px-0 py-[11px] rounded-[999px] font-extrabold text-[14px] cursor-pointer transition ${
+                        selected
+                          ? "border-[1.5px] border-[#9fb8ec] bg-[#ccd8f4] text-[#4e72c8]"
+                          : "border-[1.5px] border-[#ece0d0] bg-[#fffdf9] text-[#6e6359]"
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Código de invitación */}
+            <div
+              className="bg-[#fbf1d6] border-[1.5px] border-[#e6d08a] border-dashed rounded-[16px] p-[18px] text-center mb-[0]"
             >
-              <path d="m22 2-7 20-4-9-9-4z" />
-              <path d="M22 2 11 13" />
-            </svg>
-            Enviar invitación
-          </button>
+              <div className="text-[12px] font-extrabold tracking-[0.7px] text-[#a88526] mb-[8px]">
+                CÓDIGO DE INVITACIÓN
+              </div>
+              <div className="font-display font-semibold text-[34px] tracking-[7px] text-[#8a7234]">
+                7K4P9
+              </div>
+              <div className="mt-[6px] text-[13px] text-[#a88526]">
+                Vence en 7 días
+              </div>
+            </div>
+
+            {/* CTA Enviar invitación */}
+            <button
+              type="submit"
+              className="flex items-center justify-center gap-[9px] w-full px-0 py-[14px] rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] text-[#fff] font-extrabold text-[15.5px] shadow-[0_10px_22px_-8px_rgba(238,129,100,0.7)]"
+            >
+              <svg
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#fff"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m22 2-7 20-4-9-9-4z" />
+                <path d="M22 2 11 13" />
+              </svg>
+              Enviar invitación
+            </button>
+          </form>
         </div>
       </div>
     </>
