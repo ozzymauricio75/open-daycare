@@ -1,4 +1,11 @@
-export type PostKind = "achievement" | "activity" | "announcement";
+export type PostKind =
+  | "achievement"
+  | "activity"
+  | "announcement"
+  | "meal"
+  | "nap"
+  | "mood"
+  | "photo";
 
 export type Post = {
   id: string;
@@ -31,6 +38,10 @@ export const POST_KIND_LABELS: Record<PostKind, string> = {
   achievement: "LOGRO",
   activity: "ACTIVIDAD",
   announcement: "ANUNCIO",
+  meal: "COMIDA",
+  nap: "SIESTA",
+  mood: "ÁNIMO",
+  photo: "FOTO",
 };
 
 export const currentUser: CurrentUser = {

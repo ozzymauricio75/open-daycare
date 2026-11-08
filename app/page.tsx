@@ -1,14 +1,26 @@
+"use client";
+
+import { useState } from "react";
+
 import { currentUser, feedPosts, room } from "@/app/_data/feed";
 import { CameraIcon } from "@/app/_components/icons";
 import { PostCard } from "@/app/_components/post-card";
 import { Sidebar } from "@/app/_components/sidebar";
+import { CrearPublicacionModal } from "@/app/_components/crear-publicacion-modal";
 
 export default function Home() {
+  const [nuevaPublicacionOpen, setNuevaPublicacionOpen] = useState(false);
   const firstName = currentUser.name.split(" ")[0];
+
+  const handleNuevaPublicacion = () => setNuevaPublicacionOpen(true);
+  const handleCloseNuevaPublicacion = () => setNuevaPublicacionOpen(false);
+  const handlePublishNuevaPublicacion = () => {
+    setNuevaPublicacionOpen(false);
+  };
 
   return (
     <div className="flex min-h-screen min-w-[900px] bg-cream">
-      <Sidebar />
+      <Sidebar onNuevaPublicacion={handleNuevaPublicacion} />
 
       <main className="h-screen min-w-0 flex-1 overflow-y-auto">
         <div className="mx-auto w-full max-w-[760px] px-10 pt-[34px] pb-20">
@@ -53,6 +65,12 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      <CrearPublicacionModal
+        open={nuevaPublicacionOpen}
+        onClose={handleCloseNuevaPublicacion}
+        onPublish={handlePublishNuevaPublicacion}
+      />
     </div>
   );
 }
