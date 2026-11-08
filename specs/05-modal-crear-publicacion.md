@@ -1,6 +1,6 @@
 # SPEC 05 — Modal: Crear publicación
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** SPEC 01 (Home feed), SPEC 03 (Modal: Agregar niño)
 > **Fecha:** 2026-11-08
 > **Objetivo:** Implementar el modal "Nueva publicación" fiel a `references/pantallas/crear-publicacion.dc.html`, que se abre al hacer clic en el botón "Nueva publicación" del sidebar del feed `/`, con audiencia PARA (Mateo, Sofía, Benjamín + Toda la sala), tipos TIPO (7), campo DESCRIPCIÓN obligatorio, fotos con selección de archivo, vista previa y eliminación, validación al publicar siguiendo la convención de errores de Agregar niño, y cierre con Cancelar / fondo / Esc, sin persistencia ni navegación.
@@ -76,16 +76,16 @@ Estilos de cada tipo (fondo y color) se definen en un mapa con clases Tailwind l
 
 ## Criterios de aceptación
 
-- [ ] Clic en "Nueva publicación" del sidebar abre el modal (sin navegar).
+- [x] Clic en "Nueva publicación" del sidebar abre el modal (sin navegar).
 - [x] Modal fiel a `crear-publicacion.dc.html`: PARA (Mateo, Sofía, Benjamín, Toda la sala), TIPO (7 tipos con colores del prototipo), DESCRIPCIÓN, FOTOS.
-- [ ] FOTOS: al pulsar "Agregar" se abre el selector de archivo; las imágenes seleccionadas se muestran como thumbnails con vista previa y se pueden eliminar individualmente.
-- [ ] DESCRIPCIÓN obligatorio: publicar vacío marca error y impide el cierre.
-- [ ] Publicar completo: cierra el modal, no navega, no persiste.
-- [ ] Cierre con Cancelar, clic en fondo y Esc.
-- [ ] Animación de entrada (fade + escala/desplazamiento) al abrirse.
+- [x] FOTOS: al pulsar "Agregar" se abre el selector de archivo; las imágenes seleccionadas se muestran como thumbnails con vista previa y se pueden eliminar individualmente.
+- [x] DESCRIPCIÓN obligatorio: publicar vacío marca error y impide el cierre.
+- [x] Publicar completo: cierra el modal, no navega, no persiste.
+- [x] Cierre con Cancelar, clic en fondo y Esc.
+- [x] Animación de entrada (fade + escala/desplazamiento) al abrirse.
 - [x] Copy en español literal del prototipo; identificadores en inglés.
 - [x] `npm run lint`, `npx tsc --noEmit`, `npm run build` sin errores nuevos.
-- [ ] Screenshot Playwright 924×540 en `.playwright-mcp/` coincide visualmente con el `.dc.html`.
+- [x] Screenshot Playwright 924×540 en `.playwright-mcp/` coincide visualmente con el `.dc.html`.
 - [x] Sin dependencias nuevas en `package.json`.
 
 ## Decisiones tomadas y descartadas
