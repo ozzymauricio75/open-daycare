@@ -1,6 +1,6 @@
 # SPEC 02 — Pantallas de login y activar cuenta
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** Ninguna
 > **Fecha:** 2026-11-07
 > **Objetivo:** Replicar `references/pantallas/login.dc.html` y `references/pantallas/activar-cuenta.dc.html` como rutas estáticas de Next.js/App Router, sin el selector Ingreso como (Personal/Familia) en el login, con copy en español, identificadores en inglés y datos mock sin autenticación real.
