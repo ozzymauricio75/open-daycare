@@ -69,8 +69,8 @@ Esta spec no introduce nuevas estructuras de datos. Reusa lo existente:
 - [x] `npm run lint` — sin errores nuevos, consola limpia.
 - [x] `npx tsc --noEmit` — tipos limpios, sin errores de `PageProps` (regenerar `.next/types` si es necesario).
 - [x] `npm run build` — build de producción exitoso.
-- [ ] Visual: captura Playwright 924×540 en `.playwright-mcp/` coincide con `references/pantallas/vincular-padre.dc.html` (revisión manual, sin PNG de referencia).
-- [ ] Consola del navegador sin errores ni warnings en la página.
+- [x] Visual: captura Playwright 924×540 en `.playwright-mcp/` coincide con `references/pantallas/vincular-padre.dc.html` (revisión manual, sin PNG de referencia).
+- [x] Consola del navegador sin errores ni warnings en la página.
 
 ---
 
