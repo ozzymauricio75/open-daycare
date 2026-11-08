@@ -1,6 +1,6 @@
 # SPEC 03 — Modal: Agregar niño
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** SPEC 01 (Pantallas: Niños y Perfil del niño)
 > **Fecha:** 2026-11-08
 > **Objetivo:** Implementar el modal "Agregar niño" fiel a `references/pantallas/agregar-nino.dc.html`, que se abre al hacer clic en el botón "Agregar niño" de la vista `/kids`, con los campos obligatorios nombre completo, fecha de nacimiento y sala (tres salas de ejemplo: Soles, Luna y Mar), máscara de fecha DD/MM/AAAA, validación al guardar y una animación de entrada bonita y elegante.
