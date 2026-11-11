@@ -18,6 +18,14 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - Playwright screenshots y cualquier cosa relacionada a Playwright tienen que estar en la carpeta `.playwright-mcp` (gitignored). Playwright MCP is configured in `opencode.json`.
 - Context7: usaremos este MCP para traer la documentación del framework actualizada.
+- Supabase MCP (`https://mcp.supabase.com/mcp`): acceso al proyecto de Supabase (BD, Auth, Edge Functions, Storage, Realtime, migraciones, logs). Requiere autenticación OAuth 2.1 o un personal access token scoped (variable `SUPABASE_ACCESS_TOKEN`). La contraseña de la BD se maneja con `SUPABASE_DB_PASSWORD` para comandos como `supabase db push`. Nunca exponer la `service_role` ni secret key en clientes públicos; usar claves publicables para el frontend (cualquier `NEXT_PUBLIC_` va al navegador).
+
+## Supabase
+
+- Skill `supabase` (`.agents/skills/supabase/`): usar para CUALQUIER tarea con Supabase (Base de datos, Auth, Edge Functions, Realtime, Storage, Vectores, Cron, Colas; `supabase-js`, `@supabase/ssr`; RLS; CLI/MCP; migraciones, esquemas declarativos; depuración). Cargar antes de tocar cualquier cosa de Supabase.
+- Skill `supabase-postgres-best-practices` (`.agents/skills/supabase-postgres-best-practices/`): cargar ANTES de escribir o cambiar algo en Postgres (tablas, columnas, tipos, índices, RLS, funciones, triggers, pg_cron, pgmq, pgvector, dumps). Reglas de rendimiento y seguridad por categoría (`query-`, `conn-`, `security-`, `schema-`, `lock-`, `data-`, `monitor-`, `advanced-`).
+- Reglas clave de Supabase: habilitar RLS en toda tabla expuesta (`public` por defecto); nunca usar `user_metadata` para autorización (usa `app_metadata`); `auth.role()` está deprecado, usar `TO authenticated` + predicado de propiedad en `USING`; las vistas saltan RLS por defecto (`WITH (security_invoker = true)` en PG 15+); `SECURITY DEFINER` salta RLS, preferir `SECURITY INVOKER`; nunca exponer `service_role` en público.
+- Flujo de cambios de esquema: decidir entre esquemas declarativos (`supabase/schemas/`) o migraciones imperativas (`supabase migration new <name>`); iterar con `execute_sql` / `supabase db query` (NO `apply_migration` para cambiar esquema local); al commitear: `supabase db advisors`, revisar checklist de seguridad, `supabase db pull <nombre> --local --yes`, `supabase migration list --local`.
 
 ## Commands
 
@@ -51,6 +59,13 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - /spec Usaremos esta habilidad para crear las especificaciones.
 - /spec-impl Usaremos este skill para hacer las implementaciones.
+
+## Skills instaladas (`.agents/skills/`)
+
+- `spec` — diseña especificaciones y las guarda como `specs/NN-slug.md`.
+- `spec-impl` — implementa specs aprobadas (rama `spec-NN-slug`), sin auto-commit.
+- `supabase` — tarea con Supabase (BD, Auth, Edge Functions, Storage, RLS, migraciones, CLI/MCP).
+- `supabase-postgres-best-practices` — mejores prácticas de Postgres/Supabase antes de cambiar esquema o SQL.
 
 ## Reglas de código
 
